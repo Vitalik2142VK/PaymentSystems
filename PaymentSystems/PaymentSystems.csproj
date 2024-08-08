@@ -43,8 +43,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="PaymentSystems\FirstPaymentSystem.cs" />
+    <Compile Include="PaymentSystems\PaymentSystem.cs" />
+    <Compile Include="PaymentSystems\IHashCreator.cs" />
+    <Compile Include="PaymentSystems\IPaymentSystem.cs" />
+    <Compile Include="PaymentSystems\Order.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="PaymentSystems\HashCreator.cs" />
+    <Compile Include="PaymentSystems\SecondPaymentSystem.cs" />
+    <Compile Include="PaymentSystems\ThirdPaymentSystem.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

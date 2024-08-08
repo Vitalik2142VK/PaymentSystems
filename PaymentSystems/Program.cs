@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -10,23 +12,26 @@ namespace PaymentSystems
     {
         static void Main(string[] args)
         {
-            //Выведите платёжные ссылки для трёх разных систем платежа: 
-            //pay.system1.ru/order?amount=12000RUB&hash={MD5 хеш ID заказа}
-            //order.system2.ru/pay?hash={MD5 хеш ID заказа + сумма заказа}
-            //system3.com/pay?amount=12000&curency=RUB&hash={SHA-1 хеш сумма заказа + ID заказа + секретный ключ от системы}
+            int orederId = 1;
+            int orederAmount = 12000;
+            Order order = new Order(orederId, orederAmount);
+
+            IHashCreator creatorMD5 = new HashCreator(MD5.Create());
+            IHashCreator creatorSHA1 = new HashCreator(SHA1.Create());
+
+            List<IPaymentSystem> paymentSystems = new List<IPaymentSystem>()
+            {
+                new FirstPaymentSystem(creatorMD5),
+                new SecondPaymentSystem(creatorMD5),
+                new ThirdPaymentSystem(creatorSHA1)
+            };
+
+            foreach (var paymentSystem in paymentSystems)
+            {
+                Console.WriteLine(paymentSystem.GetPayingLink(order));
+            }
+
+            Console.ReadKey();
         }
-    }
-
-    public class Order
-    {
-        public readonly int Id;
-        public readonly int Amount;
-
-        public Order(int id, int amount) => (Id, Amount) = (id, amount);
-    }
-
-    public interface IPaymentSystem
-    {
-        string GetPayingLink(Order order);
     }
 }
